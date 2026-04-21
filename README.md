@@ -72,3 +72,9 @@ The application runs locally using a mock API setup.
 * Designed for single-user usage
 * Simulation uses a simplified traversal logic for demonstration
 * No authentication or backend persistence required for this prototype
+
+---
+## Demo
+
+<img width="2940" height="1911" alt="image" src="https://github.com/user-attachments/assets/1e363fa1-dfde-42a9-b21e-a589969720d3" />
+
