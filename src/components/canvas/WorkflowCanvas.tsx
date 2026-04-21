@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useCallback } from 'react';
 import { ReactFlow, MiniMap, Controls, Background, BackgroundVariant, ReactFlowProvider, useReactFlow } from '@xyflow/react';
-import type { Node, Edge, OnNodesChange, OnEdgesChange } from '@xyflow/react';
+import type { Node, Edge, OnNodesChange, OnEdgesChange, Connection } from '@xyflow/react';
 
 import { NODE_TYPES_MAP } from '../../constants/nodeRegistry';
 import type { NodeType } from '../../types/nodes';
@@ -11,10 +11,11 @@ interface WorkflowCanvasProps {
   edges: Edge[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
+  onConnect: (connection: Connection) => void;
   addNode: (type: NodeType, position: { x: number, y: number }) => void;
 }
 
-function Flow({ nodes, edges, onNodesChange, onEdgesChange, addNode }: WorkflowCanvasProps) {
+function Flow({ nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode }: WorkflowCanvasProps) {
   const { screenToFlowPosition } = useReactFlow();
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -55,6 +56,7 @@ function Flow({ nodes, edges, onNodesChange, onEdgesChange, addNode }: WorkflowC
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
           nodeTypes={NODE_TYPES_MAP as Record<string, React.ComponentType<import('@xyflow/react').NodeProps>>}
           onDragOver={onDragOver}
           onDrop={onDrop}

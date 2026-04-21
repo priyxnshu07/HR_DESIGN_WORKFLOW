@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { useNodesState, useEdgesState } from '@xyflow/react';
-import type { Node, Edge } from '@xyflow/react';
+import { useNodesState, useEdgesState, addEdge } from '@xyflow/react';
+import type { Node, Edge, Connection } from '@xyflow/react';
 
 import { NODE_REGISTRY } from '../constants/nodeRegistry';
 import type { NodeType } from '../types/nodes';
@@ -10,6 +10,11 @@ const generateId = () => `node_${Date.now()}_${Math.floor(Math.random() * 1000)}
 export function useWorkflow() {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
 
   const addNode = useCallback((type: NodeType, position: { x: number, y: number }) => {
     const id = generateId();
@@ -49,6 +54,7 @@ export function useWorkflow() {
     edges,
     onNodesChange,
     onEdgesChange,
+    onConnect,
     addNode,
     updateNodeData,
     deleteNode,

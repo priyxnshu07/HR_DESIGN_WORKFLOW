@@ -7,7 +7,7 @@ import { useWorkflow } from './hooks/useWorkflow';
 import { serializeWorkflow } from './utils/serializeWorkflow';
 
 export default function App() {
-  const { nodes, edges, onNodesChange, onEdgesChange, addNode, selectedNode, updateNodeData } = useWorkflow();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode, selectedNode, updateNodeData } = useWorkflow();
   const [workflowName, setWorkflowName] = useState('Untitled Workflow');
 
   const handleExport = () => {
@@ -62,6 +62,7 @@ export default function App() {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
             addNode={addNode}
           />
         </main>
