@@ -7,7 +7,7 @@ import { useWorkflow } from './hooks/useWorkflow';
 import { serializeWorkflow } from './utils/serializeWorkflow';
 
 export default function App() {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode, selectedNode, updateNodeData } = useWorkflow();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode, selectedNode, updateNodeData, saveWorkflow, loadWorkflow } = useWorkflow();
   const [workflowName, setWorkflowName] = useState('Untitled Workflow');
 
   const handleExport = () => {
@@ -39,15 +39,29 @@ export default function App() {
             className="border-b border-dashed border-gray-300 px-2 py-1 focus:outline-none focus:border-solid focus:border-blue-600 font-semibold text-gray-700 bg-transparent w-64 placeholder-gray-400 transition-colors"
             placeholder="Workflow Name"
           />
-          <button 
-            onClick={handleExport}
-            className="flex items-center justify-center space-x-1.5 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-gray-700 px-4 py-1.5 rounded-lg transition-all font-medium text-sm shadow-sm active:scale-95"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-            </svg>
-            <span>Export JSON</span>
-          </button>
+          <div className="flex items-center space-x-2">
+            <button 
+              onClick={loadWorkflow}
+              className="flex items-center justify-center border border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-gray-700 px-4 py-1.5 rounded-lg transition-all font-medium text-sm shadow-sm active:scale-95"
+            >
+              Load
+            </button>
+            <button 
+              onClick={saveWorkflow}
+              className="flex items-center justify-center border border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-gray-700 px-4 py-1.5 rounded-lg transition-all font-medium text-sm shadow-sm active:scale-95"
+            >
+              Save
+            </button>
+            <button 
+              onClick={handleExport}
+              className="flex items-center justify-center space-x-1.5 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-1.5 rounded-lg transition-all font-medium text-sm shadow-sm active:scale-95 bg-gray-50"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </svg>
+              <span>Export</span>
+            </button>
+          </div>
         </div>
       </header>
 

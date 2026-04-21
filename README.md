@@ -1,42 +1,74 @@
 # HR Workflow Designer
 
+## Overview
+
+A visual workflow builder that allows HR users to design and simulate workflows such as onboarding, approvals, and automated actions using a drag-and-drop interface.
+
+---
+
 ## How to Run
 
-1. Install all dependencies:
+1. Install dependencies:
+
 ```bash
 npm install
 ```
+
 2. Start the development server:
+
 ```bash
 npm run dev
 ```
-*(By default, the application runs entirely locally using a mock API interceptor enabled via `VITE_USE_MOCK=true` initialized in the `.env` file.)*
+
+The application runs locally using a mock API setup.
+
+---
+
+## Features
+
+* Drag-and-drop workflow builder using React Flow
+* Multiple node types: Start, Task, Approval, Automated, End
+* Dynamic configuration panel for each node
+* Real-time updates between form inputs and node UI
+* Workflow simulation with step-by-step execution
+* Basic validation before simulation (start/end checks, connectivity)
+* Local storage support (save and load workflows)
+
+---
 
 ## Architecture
 
-* **The Registry Pattern**: The application relies on `src/constants/nodeRegistry.ts` as the single source of truth for all node types in the system. It centrally manages node colors, default data layouts, sidebar palette entries, and dynamically binds custom node UI schemas into the React Flow engine.
-* **3-Layer State Storage Pipeline**: 
-  1. **React Flow State (`nodes` / `edges`)**: The mathematical structural coordinates and relationship mapping managed seamlessly by the XY Flow engine.
-  2. **`useWorkflow` Hook**: Wraps the raw graph state into an abstracted, domain-specific state manager (bundling generic helper methods to safely add, update, and track selected node records).
-  3. **App Level Context**: Lifts the unified workflow state to the root `App.tsx`, enabling the framework to securely drill the live graph down simultaneously into independent layout panels (`WorkflowCanvas`, `SimulationPanel`, and `ConfigPanel`).
+* Built using React + TypeScript
+* React Flow handles graph rendering and interactions
+* Node-based design for extensibility
+* Centralized node registry for managing node types
+* Config panel dynamically renders based on selected node
+* Workflow logic separated into hooks and utility functions
+
+---
 
 ## Key Design Decisions
 
-1. **Registry Pattern for Extensibility**: Scaling the graph engine internally is completely effortless. Introducing a brand new node logic type requires just 1 pure display component, 1 configuration form structure, and 1 mapping entry in the centralized `nodeRegistry.ts`.
-2. **`useNodeForm` Hook**: Consolidates all complex dirty-tracking, React 18 render-phase prop syncing, and recursive array modifications. This pattern isolates performance risks into a single robust file, allowing the actual form components to remain purely declarative.
-3. **Mock API Swap Pattern**: `client.ts` establishes a central abstraction across all HTTP requests that securely monitors the `$VITE_USE_MOCK` boolean. Toggling from the local-only mocked BFS algorithms to a cloud-based external physical environment requires zero code application adjustments!
-4. **Validation Before API Call**: The graph forces strict deterministic client-side checks natively. It intercepts invalid graph combinations (such as cyclical logic loops or orphaned blocks) instantly within the UI tier, preemptively avoiding expensive backend compute waste.
+* Used a node registry pattern to make it easy to add new node types
+* Kept state management simple using React Flow hooks instead of heavy libraries
+* Built dynamic configuration panels to support different node types
+* Added validation before simulation to ensure workflow correctness
+* Integrated local storage for persistence without backend dependency
 
-## What I Would Add With More Time
+---
 
-- **Undo/Redo Tracking**: Adding snapshot bounds utilizing `useHistoryState` for fluid navigation.
-- **Inline Visual Error Validation**: Flagging invalid geometry errors dynamically inside the actual Canvas rendering space.
-- **Export/Import JSON Full Loop**: Closing the gap allowing physical `.json` graph payloads to be dragged backwards into the designer environment. (Note: Output Export JSON exists!).
-- **Real Application Backend**: Mapping physical API pipelines backwards to a PostgreSQL state persistence framework tracking explicit payload saves!
-- **Node Version History**: Adhering an append-only timeline table per specific `Node ID`, allowing human operators to securely roll back structural block edits.
+## Future Improvements
+
+* Undo/Redo functionality
+* Advanced validation (cycle detection, visual error indicators)
+* Backend persistence with API integration
+* Import workflow from JSON
+* Improved UI/UX and performance optimizations
+
+---
 
 ## Assumptions
 
-- Built explicitly under a Single User environment—there are no integrated complex AAA (Authentication) workflows required per this spec cycle.
-- The default Mock Algorithm processes safe traversals through the graph queue completely deterministically for presentation.
-- Used strict Vanilla Tailwind CSS for styling exclusively. Excluded any complex, bloated GUI UI component libraries prioritizing high execution speeds.
+* Designed for single-user usage
+* Simulation uses a simplified traversal logic for demonstration
+* No authentication or backend persistence required for this prototype
