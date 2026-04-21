@@ -1,8 +1,7 @@
 import type React from 'react';
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { ReactFlow, MiniMap, Controls, Background, BackgroundVariant, ReactFlowProvider, useReactFlow } from '@xyflow/react';
 import type { Node, Edge, OnNodesChange, OnEdgesChange } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
 
 import { NODE_TYPES_MAP } from '../../constants/nodeRegistry';
 import type { NodeType } from '../../types/nodes';
@@ -16,7 +15,6 @@ interface WorkflowCanvasProps {
 }
 
 function Flow({ nodes, edges, onNodesChange, onEdgesChange, addNode }: WorkflowCanvasProps) {
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { screenToFlowPosition } = useReactFlow();
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -42,7 +40,7 @@ function Flow({ nodes, edges, onNodesChange, onEdgesChange, addNode }: WorkflowC
   );
 
   return (
-    <div className="w-full h-full bg-slate-50 relative" ref={reactFlowWrapper}>
+    <div className="absolute inset-0 w-full h-full bg-slate-50">
       {nodes.length === 0 && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center space-y-3 bg-white/70 backdrop-blur px-8 py-6 rounded-2xl shadow-sm border border-gray-200">
@@ -51,20 +49,22 @@ function Flow({ nodes, edges, onNodesChange, onEdgesChange, addNode }: WorkflowC
           </div>
         </div>
       )}
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        nodeTypes={NODE_TYPES_MAP as Record<string, React.ComponentType<import('@xyflow/react').NodeProps>>}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        fitView
-      >
-        <Background variant={BackgroundVariant.Dots} gap={16} size={1.2} />
-        <MiniMap zoomable pannable nodeColor="#cbd5e1" maskColor="rgba(248, 250, 252, 0.7)" />
-        <Controls />
-      </ReactFlow>
+      <div style={{ width: '100%', height: '100%' }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={NODE_TYPES_MAP as Record<string, React.ComponentType<import('@xyflow/react').NodeProps>>}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+          fitView
+        >
+          <Background variant={BackgroundVariant.Dots} gap={16} size={1.2} />
+          <MiniMap zoomable pannable nodeColor="#cbd5e1" maskColor="rgba(248, 250, 252, 0.7)" />
+          <Controls />
+        </ReactFlow>
+      </div>
     </div>
   );
 }

@@ -56,7 +56,7 @@ export default function App() {
           <Sidebar />
         </div>
 
-        <main className="flex-1 h-full min-w-0 relative">
+        <main className="flex-1 min-w-0 relative">
           <WorkflowCanvas 
             nodes={nodes}
             edges={edges}
